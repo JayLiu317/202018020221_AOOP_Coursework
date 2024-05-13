@@ -1,0 +1,122 @@
+@startuml
+class CLI {
++ {static} Scanner scanner
++ {static} Model model
++ {static} void main(String[])
++ {static} void gameBegin()
++ {static} void play()
++ {static} String getUserInputEquation()
++ {static} void printBefore()
++ {static} int getChoice(int,int)
+}
+
+
+class model.impl.ModelImpl {
+- boolean checkValid
+- boolean displayEquation
+- boolean randomSelect
+- List<String> strings
+- List<List<CharacterState>> allState
+- List<String> allInput
+- String nowEquation
++ void init()
++ void reset()
+- void setRandomEquation(boolean)
++ List<CharacterState> getInputState(String)
++ void addInputLine(String)
++ List<String> getAllInput()
++ List<List<CharacterState>> getAllState()
++ String getNowEquation()
++ boolean isCorrectEquation(String)
++ boolean getCheck()
++ boolean getDisplay()
++ double evaluate(String)
+- double parseExpression(String)
+}
+
+
+class controller.impl.ControllerImpl {
+- Model model
++ <<Create>> ControllerImpl()
++ List<CharacterState> getInputState(String)
++ boolean isWin(List<CharacterState>)
++ String getNowEquation()
++ void reset()
++ boolean isCorrectEquation(String)
++ boolean getCheckValid()
++ boolean getDisplayEquation()
+}
+
+
+interface model.Model {
+~ void init()
+~ void reset()
+~ List<CharacterState> getInputState(String)
+~ void addInputLine(String)
+~ List<String> getAllInput()
+~ List<List<CharacterState>> getAllState()
+~ String getNowEquation()
+~ boolean isCorrectEquation(String)
+~ boolean getCheck()
+~ boolean getDisplay()
+}
+
+interface controller.Controller {
+~ List<CharacterState> getInputState(String)
+~ boolean isWin(List<CharacterState>)
+~ String getNowEquation()
+~ void reset()
+~ boolean isCorrectEquation(String)
+~ boolean getCheckValid()
+~ boolean getDisplayEquation()
+}
+
+class ModelTest {
+~ void init()
+~ void reset()
+~ void getInputState()
+~ void isCorrectEquation()
+}
+
+class view.View {
+- JTextField[][] grid
+- JButton[] buttons
+- String[] buttonLabels
+- Controller controller
+- boolean gameBegin
+- int round
+- int col
+- JButton begin
+- JLabel equation_target
++ <<Create>> View()
+- void initGrid()
+- void initButtons()
+- void resetButtonColor()
+- void reset()
+}
+
+
+class view.View$ButtonListener {
++ void actionPerformed(ActionEvent)
+- void setKeyBoardColor()
+}
+
+class GUI {
++ {static} void main(String[])
+}
+
+enum pojo.CharacterState {
++  NOT_EXIST
++  INCORRECT_LOCATION
++  CORRECT
+}
+
+
+
+model.Model <|.. model.impl.ModelImpl
+model.impl.Observable <|-- model.impl.ModelImpl
+controller.Controller <|.. controller.impl.ControllerImpl
+view.JFrame <|-- view.View
+view.View +.. view.View$ButtonListener
+view.ActionListener <|.. view.View$ButtonListener
+@enduml
